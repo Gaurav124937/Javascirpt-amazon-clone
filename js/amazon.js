@@ -1,26 +1,6 @@
-const products = [{
-    image:'../images/products/athletic-cotton-socks-6-pairs.jpg',
-    name:'Black and Gray Athletic Cotton Socks - 6 Pairs',
-    rating:{ stars: 4.5, count: 87 },
-    pricecents: 1090,
-},
-{
-    image:'../images/products/intermediate-composite-basketball.jpg',
-    name:'Intermediate Composite Basketball',
-    rating:{ stars: 4.0, count: 127 },
-    pricecents: 2095,
-
-},
-{
-    image:'../images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg',
-    name:'Adults Plain Cotton T-Shirt 2-Pack (Teal, Large)',
-    rating:{ stars: 4.5, count: 56 },
-    pricecents: 1499,   
-}]
-
 let productsHTML = '';
 products.forEach((product) => {
-     productsHTML += `
+  productsHTML += `
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -40,11 +20,11 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${(product.pricecents / 100).toFixed(2)}
+            $${(product.priceCents / 100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class = "js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -60,15 +40,80 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart added-symbol-${product.id}">
             <img src="../images/icons/checkmark.png">
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary     js-add-to-cart" data-product-id="${product.id}">
             Add to Cart
           </button>
         </div>`;
 
-        document.querySelector('.js-products-grid').innerHTML = productsHTML;
-})
+  document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+  const addMessageTimeouts = {};
+
+  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    button.addEventListener('click', () => {
+      //const productId = button.getAttribute('data-product-id');
+      const productId = button.dataset.productId;
+
+      let matchingItem;
+      cart.forEach((item) => {
+        if (item.productId === productId) {
+          matchingItem = item;
+        }
+      });
+
+      //makin selector interactive
+      const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+      console.log(quantitySelector);
+
+      const quantity = Number(quantitySelector.value);
+
+      if (matchingItem) {
+        matchingItem.quantity += quantity;
+      } else {
+        cart.push({
+          productId: productId,
+          quantity: quantity
+        });
+      }
+
+
+
+      const addMessage = document.querySelector(`.added-symbol-${productId}`);
+      console.log(addMessage);
+      addMessage.classList.add('added-to-cart-visible');
+
+
+
+      // Check if there's a previous timeout for this
+      // product. If there is, we should stop it.
+      const previousTimeoutId = addMessageTimeouts[productId];
+      if (previousTimeoutId) {
+        clearTimeout(previousTimeoutId);
+      }
+
+      const timeoutId = setTimeout(() => {
+        addMessage.classList.remove('added-to-cart-visible');
+      }, 2000);
+
+      // Save the timeoutId for this product
+      // so we can stop it later if we need to.
+      addMessageTimeouts[productId] = timeoutId;
+
+
+      ///makin card quantity visible on page  
+      let cartQuantity = 0;
+      cart.forEach((item) => {
+        cartQuantity += item.quantity;
+      });
+      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    });
+
+
+  });
+});
+
