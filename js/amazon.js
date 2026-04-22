@@ -1,3 +1,9 @@
+import {cart} from '../data/cart.js';
+//<--feature of module-->
+//to avoid naming conflict cart can be import as any other name
+//import {cart as mycart} from '../data/cart.js';
+import {products} from '../data/products.js';
+
 let productsHTML = '';
 products.forEach((product) => {
   productsHTML += `
@@ -49,29 +55,21 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>`;
+  
 
-  document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-  const addMessageTimeouts = {};
-
-  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-    button.addEventListener('click', () => {
-      //const productId = button.getAttribute('data-product-id');
-      const productId = button.dataset.productId;
-
+  function addTocart(productId){
       let matchingItem;
-      cart.forEach((item) => {
-        if (item.productId === productId) {
-          matchingItem = item;
+      cart.forEach((cartItem) => {
+        if (cartItem.productId === productId) {
+          matchingItem = cartItem;
         }
       });
-
-      //makin selector interactive
-      const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-      console.log(quantitySelector);
-
-      const quantity = Number(quantitySelector.value);
-
+      
+      //calling selector function
+      const quantity = selector(productId); 
+      
+      
       if (matchingItem) {
         matchingItem.quantity += quantity;
       } else {
@@ -80,35 +78,58 @@ products.forEach((product) => {
           quantity: quantity
         });
       }
+  }
 
+  function selector(productId) {      
+      //makin selector interactive
+      const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+      console.log(quantitySelector);
 
-
-      const addMessage = document.querySelector(`.added-symbol-${productId}`);
-      console.log(addMessage);
-      addMessage.classList.add('added-to-cart-visible');
-
-
-
-      // Check if there's a previous timeout for this
-      // product. If there is, we should stop it.
-      const previousTimeoutId = addMessageTimeouts[productId];
-      if (previousTimeoutId) {
-        clearTimeout(previousTimeoutId);
+      const quantity = Number(quantitySelector.value);
+      return quantity;
       }
 
-      const timeoutId = setTimeout(() => {
-        addMessage.classList.remove('added-to-cart-visible');
-      }, 2000);
+  
+  function addedMessage(productId){
 
-      // Save the timeoutId for this product
-      // so we can stop it later if we need to.
-      addMessageTimeouts[productId] = timeoutId;
+        const addMessage = document.querySelector(`.added-symbol-${productId}`);
+        addMessage.classList.add('added-to-cart-visible');
+          
+        const addMessageTimeouts = {};
+        
+        // Check if there's a previous timeout for this
+        // product. If there is, we should stop it.
+        const previousTimeoutId = addMessageTimeouts[productId];
+        if (previousTimeoutId) {
+          clearTimeout(previousTimeoutId);
+        }
 
+        const timeoutId = setTimeout(() => {
+          addMessage.classList.remove('added-to-cart-visible');
+        }, 2000);
+
+        // Save the timeoutId for this product
+        // so we can stop it later if we need to.
+        addMessageTimeouts[productId] = timeoutId;
+        };
+      
+      
+  document.querySelector('.js-products-grid').innerHTML = productsHTML;
+  
+  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    button.addEventListener('click', () => {
+      //const productId = button.getAttribute('data-product-id');
+      const productId = button.dataset.productId;
+      
+      addTocart(productId);
+
+      //calling addedMssage function
+      addedMessage(productId);
 
       ///makin card quantity visible on page  
       let cartQuantity = 0;
-      cart.forEach((item) => {
-        cartQuantity += item.quantity;
+      cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
       });
       document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
     });
