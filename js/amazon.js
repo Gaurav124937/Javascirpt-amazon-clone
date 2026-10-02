@@ -1,10 +1,10 @@
-import {cart} from '../data/cart.js';
+import { cart, addTocart } from "../data/cart.js";
 //<--feature of module-->
 //to avoid naming conflict cart can be import as any other name
 //import {cart as mycart} from '../data/cart.js';
-import {products} from '../data/products.js';
+import { products } from "../data/products.js";
 
-let productsHTML = '';
+let productsHTML = "";
 products.forEach((product) => {
   productsHTML += `
         <div class="product-container">
@@ -55,86 +55,58 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>`;
-  
 
+  function selector(productId) {
+    //makin selector interactive
+    const quantitySelector = document.querySelector(
+      `.js-quantity-selector-${productId}`,
+    );
+    console.log(quantitySelector);
 
-  function addTocart(productId){
-      let matchingItem;
-      cart.forEach((cartItem) => {
-        if (cartItem.productId === productId) {
-          matchingItem = cartItem;
-        }
-      });
-      
-      //calling selector function
-      const quantity = selector(productId); 
-      
-      
-      if (matchingItem) {
-        matchingItem.quantity += quantity;
-      } else {
-        cart.push({
-          productId: productId,
-          quantity: quantity
-        });
-      }
+    const quantity = Number(quantitySelector.value);
+    return quantity;
   }
 
-  function selector(productId) {      
-      //makin selector interactive
-      const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-      console.log(quantitySelector);
+  function addedMessage(productId) {
+    const addMessage = document.querySelector(`.added-symbol-${productId}`);
+    addMessage.classList.add("added-to-cart-visible");
 
-      const quantity = Number(quantitySelector.value);
-      return quantity;
-      }
+    const addMessageTimeouts = {};
 
-  
-  function addedMessage(productId){
+    // Check if there's a previous timeout for this
+    // product. If there is, we should stop it.
+    const previousTimeoutId = addMessageTimeouts[productId];
+    if (previousTimeoutId) {
+      clearTimeout(previousTimeoutId);
+    }
 
-        const addMessage = document.querySelector(`.added-symbol-${productId}`);
-        addMessage.classList.add('added-to-cart-visible');
-          
-        const addMessageTimeouts = {};
-        
-        // Check if there's a previous timeout for this
-        // product. If there is, we should stop it.
-        const previousTimeoutId = addMessageTimeouts[productId];
-        if (previousTimeoutId) {
-          clearTimeout(previousTimeoutId);
-        }
+    const timeoutId = setTimeout(() => {
+      addMessage.classList.remove("added-to-cart-visible");
+    }, 2000);
 
-        const timeoutId = setTimeout(() => {
-          addMessage.classList.remove('added-to-cart-visible');
-        }, 2000);
+    // Save the timeoutId for this product
+    // so we can stop it later if we need to.
+    addMessageTimeouts[productId] = timeoutId;
+  }
 
-        // Save the timeoutId for this product
-        // so we can stop it later if we need to.
-        addMessageTimeouts[productId] = timeoutId;
-        };
-      
-      
-  document.querySelector('.js-products-grid').innerHTML = productsHTML;
-  
-  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-    button.addEventListener('click', () => {
+  document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+    button.addEventListener("click", () => {
       //const productId = button.getAttribute('data-product-id');
       const productId = button.dataset.productId;
-      
+
       addTocart(productId);
 
       //calling addedMssage function
       addedMessage(productId);
 
-      ///makin card quantity visible on page  
+      ///makin card quantity visible on page
       let cartQuantity = 0;
       cart.forEach((cartItem) => {
         cartQuantity += cartItem.quantity;
       });
-      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+      document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
     });
-
-
   });
 });
-
