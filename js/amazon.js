@@ -57,17 +57,6 @@ products.forEach((product) => {
           </button>
         </div>`;
 
-  function selector(productId) {
-    //makin selector interactive
-    const quantitySelector = document.querySelector(
-      `.js-quantity-selector-${productId}`,
-    );
-    console.log(quantitySelector);
-
-    const quantity = Number(quantitySelector.value);
-    return quantity;
-  }
-
   function addedMessage(productId) {
     const addMessage = document.querySelector(`.added-symbol-${productId}`);
     addMessage.classList.add("added-to-cart-visible");
