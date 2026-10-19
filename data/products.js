@@ -1,3 +1,4 @@
+import { formatCurrency } from "../js/utils/money.js";
 export function getProduct(productId) {
   let matchingProduct;
   products.forEach((product) => {
@@ -15,6 +16,13 @@ class Product {
   rating;
   priceCents;
   keywords;
+
+  getStarsUrl() {
+    return `../images/ratings/rating-${Math.round(this.rating.stars * 10)}.png`;
+  }
+  getPrice() {
+    return `$${formatCurrency(this.priceCents)}`;
+  }
 
   constructor(productDetails) {
     this.id = productDetails.id;
@@ -689,4 +697,3 @@ export const products = [
   return new Product(productDetails);
 });
 
-console.log(products);
