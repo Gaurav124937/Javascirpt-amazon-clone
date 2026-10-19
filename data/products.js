@@ -724,3 +724,38 @@ export const products = [
   }
 
 });
+
+
+/*//built in classes
+const date = new Date();
+console.log(date);
+console.log(date.toLocaleDateString());
+console.log(date.toLocaleTimeString());*/
+
+
+
+
+/*//inside a method this points to outer object
+const obj = {
+  method(){
+    console.log(this);
+  }
+}
+obj.method();
+
+//inside a function this is undefined
+function logThis(){
+  console.log(this);
+}
+logThis();
+//we can change this
+logThis.call('hello');
+
+//arrow function do not change the value of this
+this
+const obj1 = {
+  method :()=>{
+    console.log(this);
+  }
+}
+obj1.method();*/
