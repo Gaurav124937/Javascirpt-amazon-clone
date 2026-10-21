@@ -726,31 +726,31 @@ export const products = [
 });
 
 
-//GETTING PRODUCTS FROM BACKEND
-//cant run from backend since image url doesnt match from baceknd products array
-/*
-export let products = [];
+// GETTING PRODUCTS FROM BACKEND
+// cant run from backend since image url doesnt match from baceknd products array
 
-export function loadProducts(fun) {
-  const xhr = new XMLHttpRequest();
-  xhr.addEventListener('load', () => {
-    products = JSON.parse(xhr.response).map((productDetails) => {
-      if (productDetails.type === 'clothing') {
-        return new Clothing(productDetails);
-      }
-      else {
-        return new Product(productDetails);
-      }
 
-    });
-    console.log(products);
-    fun();
-  })
+// export let products = [];
 
-  xhr.open('GET', 'https://supersimplebackend.dev/products');
-  xhr.send();
-}
-*/
+// export function loadProducts(fun) {
+//   const xhr = new XMLHttpRequest();
+//   xhr.addEventListener('load', () => {
+//     products = JSON.parse(xhr.response).map((productDetails) => {
+//       if (productDetails.type === 'clothing') {
+//         return new Clothing(productDetails);
+//       }
+//       else {
+//         return new Product(productDetails);
+//       }
+
+//     });
+//     fun();
+//   })
+
+//   xhr.open('GET', 'https://supersimplebackend.dev/products');
+//   xhr.send();
+// }
+
 
 /*//built in classes
 const date = new Date();

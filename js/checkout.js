@@ -1,19 +1,68 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
+// import { loadProducts } from "../data/products.js";
+// import { loadCart } from "../data/cart.js";
 
-//backend integration
-/*
-import { loadProducts } from "../data/products.js";
+//<------------ SIMPLE BACKEND INTEGRATION -------------->
 
-loadProducts(() => {
-    renderOrderSummary();
-    renderPaymentSummary();
-    renderCheckoutHeader();
-});
-*/
+// loadProducts(() => {
+//     loadCart(()=>{
+//         renderOrderSummary();
+//     renderPaymentSummary();
+//     renderCheckoutHeader();
+//     })
+// });
+
 //import '../data/backend-practice.js';
 //import '../data/cart-class.js';
+
+
+//<---------- BACKEND INTEGRATION USING PROMISES ------------->
+
+//<------- PROMISE ALL -------->
+// Promise.all([
+//     new Promise((resolve) => {
+//         loadProducts(() => {
+//             resolve('value 1');
+//         })
+
+//     }),
+//     new Promise((resolve) => {
+//         loadCart(() => {
+//             resolve('value 2');
+//         })
+//     })
+
+// ]).then((values) => {
+//     console.log(values);
+//     renderOrderSummary();
+//     renderPaymentSummary();
+//     renderCheckoutHeader();
+// });
+
+//<-----SIMPLE PROMISE ----->
+// new Promise((resolve) => {
+//     console.log('start promise');
+//     loadProducts(() => {
+//         console.log('finish loading');
+//         resolve();
+//     })
+
+// }).then(() => {
+//     return new Promise((resolve) => {
+//         loadCart(() => {
+//             resolve();
+//         })
+//     })
+
+// }).then(() => {
+
+//     renderOrderSummary();
+//     renderPaymentSummary();
+//     renderCheckoutHeader();
+// });
+
 
 renderOrderSummary();
 renderPaymentSummary();
