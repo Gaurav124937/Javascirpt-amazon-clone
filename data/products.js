@@ -785,3 +785,32 @@ const obj1 = {
   }
 }
 obj1.method();*/
+
+
+// <--------- FETCH ------------>
+//fetch is a better way to make network requests than XMLHttpRequest
+//fetch returns a promise
+//promise is an object that represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+//promise has three states
+//pending: initial state, neither fulfilled nor rejected.
+//fulfilled: meaning that the operation completed successfully.
+//rejected: meaning that the operation failed.
+//fetch returns a promise that resolves to the Response object representing the response to the request.
+
+// export let products = [];
+// export function loadProductsFetch() {
+//   const promise =  fetch('https://supersimplebackend.dev/products').then((response) => {
+//     return response.json();
+//   }).then((productData) => {
+//     products = productData.map((productDetails) => {
+//       if (productDetails.type === 'clothing') {
+//         return new Clothing(productDetails);
+//       }
+//       else {
+//         return new Product(productDetails);
+//       }
+//     });
+//     console.log(products);
+//   })
+//   return promise;
+// }
