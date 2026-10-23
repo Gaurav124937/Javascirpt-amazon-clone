@@ -85,14 +85,23 @@ import { loadCart } from "../data/cart.js";
 
 
 async function loadPage() {
-    await loadProductsFetch();
-    const value = await new Promise((resolve) => {
-        loadCart(() => {
-            resolve('value 2');
-        })
-    });
-    console.log(value);
+    //<------- ERROE HANDLING ---------->
+    try {
+        //throw 'error 1';
+        await loadProductsFetch();
+        const value = await new Promise((resolve, reject) => {
+            loadCart(() => {
+                //throw 'error 2';
 
+                resolve('value 2');
+                //reject('error 3');
+            })
+        });
+        console.log(value);
+    } catch (error) {
+        console.log('unexpected error, please try later');
+        console.log(error);
+    }
     renderOrderSummary();
     renderPaymentSummary();
     renderCheckoutHeader();

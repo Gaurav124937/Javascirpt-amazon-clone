@@ -729,24 +729,30 @@ class Clothing extends Product {
 // GETTING PRODUCTS FROM BACKEND
 // export let products = [];
 
-// export function loadProducts(fun) {
-//   const xhr = new XMLHttpRequest();
-//   xhr.addEventListener('load', () => {
-//     products = JSON.parse(xhr.response).map((productDetails) => {
-//       if (productDetails.type === 'clothing') {
-//         return new Clothing(productDetails);
-//       }
-//       else {
-//         return new Product(productDetails);
-//       }
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', () => {
+    products = JSON.parse(xhr.response).map((productDetails) => {
+      if (productDetails.type === 'clothing') {
+        return new Clothing(productDetails);
+      }
+      else {
+        return new Product(productDetails);
+      }
 
-//     });
-//     fun();
-//   })
+    });
+    fun();
+  })
+  //<-------- ERROR HANDLING ----------->
+  xhr.addEventListener('error', (error) => {
+    console.log('unexpected error, please try later');
+    console.log(error);
+  })
 
-//   xhr.open('GET', 'https://supersimplebackend.dev/products');
-//   xhr.send();
-// }
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();
+}
+
 
 
 /*//built in classes
@@ -812,7 +818,9 @@ export function loadProductsFetch() {
       else {
         return new Product(updatedProduct);
       }
-    });
+    });// ERROR HANDLING IN PROMISES
+  }).catch((error) => {
+    console.log('unexpected error, please try later');
   })
   return promise;
 }
