@@ -1,7 +1,14 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
-//import { loadProducts, loadProductsFetch } from "../data/products.js";
+import { loadProductsFetch } from "../data/products.js";
+import { loadCart } from "../data/cart.js";
+
+
+// renderOrderSummary();
+// renderPaymentSummary();
+// renderCheckoutHeader();
+
 
 
 //<------------ SIMPLE BACKEND INTEGRATION -------------->
@@ -22,7 +29,7 @@ import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
 
 //<------- PROMISE ALL -------->
 // Promise.all([
-//     //fetch method
+//     //<--------- FETCH METHOD ---------->
 //     loadProductsFetch(),
 
 //     // Simple promise
@@ -68,6 +75,27 @@ import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
 // });
 
 
-renderOrderSummary();
-renderPaymentSummary();
-renderCheckoutHeader();
+
+//<------------------ ASYNC AWAIT ----------------->
+//.>async await is a better way of handling asynchronous operations than promises
+//async function always returns a promise
+//await can only be used inside an async function
+//await makes the function wait for the promise to resolve or reject before moving on to the next line of code
+//async await is syntactic sugar over promises
+
+
+async function loadPage() {
+    await loadProductsFetch();
+    const value = await new Promise((resolve) => {
+        loadCart(() => {
+            resolve('value 2');
+        })
+    });
+    console.log(value);
+
+    renderOrderSummary();
+    renderPaymentSummary();
+    renderCheckoutHeader();
+}
+
+loadPage();

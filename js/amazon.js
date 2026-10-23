@@ -2,11 +2,11 @@ import { cart, addTocart } from "../data/cart.js";
 //<--feature of module-->
 //to avoid naming conflict cart can be import as any other name
 //import {cart as mycart} from '../data/cart.js';
-import { products } from "../data/products.js";
+import { products,loadProductsFetch } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 //loadProducts(renderProductsGrid);
-renderProductsGrid();
+loadProductsFetch().then(renderProductsGrid);
 function renderProductsGrid() {
   let productsHTML = "";
   products.forEach((product) => {
