@@ -85,5 +85,12 @@
         </div>
       </div>
     </div>
+    <script>
+      //URL parameters are the part of the URL that comes after the question mark (?). For example, in the URL below, the orderId parameter has a value of 27cba69d-4c3d-4098-b42d-ac7fa62b7664:
+      //https://www.example.com/tracking.html?orderId=27cba69d
+      //This code gets the orderId parameter from the URL and logs it to the console.
+      const url = new URL(window.location.href);
+      console.log(url.searchParams.get("orderId"));
+    </script>
   </body>
 </html>
