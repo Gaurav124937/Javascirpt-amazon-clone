@@ -8,24 +8,24 @@ import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
 import { addOrder } from "../../data/orders.js";
 
+export let orders = [];
 export function renderPaymentSummary() {
-    let totalProduct = 0;
-    let productPriceCents = 0;
-    let shippingPriceCents = 0;
-    cart.forEach((cartItem) => {
-        totalProduct += cartItem.quantity;
-        const product = getProduct(cartItem.productId);
-        productPriceCents += product.priceCents * cartItem.quantity;
+  let totalProduct = 0;
+  let productPriceCents = 0;
+  let shippingPriceCents = 0;
+  cart.forEach((cartItem) => {
+    totalProduct += cartItem.quantity;
+    const product = getProduct(cartItem.productId);
+    productPriceCents += product.priceCents * cartItem.quantity;
 
-        const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-        shippingPriceCents += deliveryOption.priceCents;
+    const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
+    shippingPriceCents += deliveryOption.priceCents;
+  });
+  const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
+  const taxCent = totalBeforeTaxCents * 0.1;
+  const totalCents = totalBeforeTaxCents + taxCent;
 
-    });
-    const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
-    const taxCent = totalBeforeTaxCents * 0.1;
-    const totalCents = totalBeforeTaxCents + taxCent;
-
-    const paymentSummaryHtml = `
+  const paymentSummaryHtml = `
         <div class="payment-summary-title">Order Summary</div>
 
         <div class="payment-summary-row">
@@ -57,25 +57,28 @@ export function renderPaymentSummary() {
         Place your order
         </button>`;
 
-    document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHtml;
-    document.querySelector(".js-place-order").addEventListener('click', async () => {
-        try {
-            const response = await fetch('https://supersimplebackend.dev/orders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    cart: cart
-                })
-            });
-            const order = await response.json();
-            addOrder(order);
-        }
-        catch (error) {
-            console.log('unexpected error, please try again later');
-        }
+  document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHtml;
+  document
+    .querySelector(".js-place-order")
+    .addEventListener("click", async () => {
+      try {
+        const response = await fetch("https://supersimplebackend.dev/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cart: cart,
+          }),
+        });
+        const order = await response.json();
+        orders = addOrder(order);
+        console.log(orders);
+      } catch (error) {
+        console.log("unexpected error, please try again later");
+      }
 
-        window.location.href = 'orders.html';
-    })
+      window.location.href = "orders.html";
+    });
+
 }
