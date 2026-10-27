@@ -11,7 +11,6 @@ The project recreates the core shopping flow of Amazon, including product browsi
 
 ### 👉 [Click here to open the Amazon Clone](https://gaurav124937.github.io/Javascirpt-amazon-clone/html/amazon.html)
 
-
 ---
 
 ## ✨ Features
