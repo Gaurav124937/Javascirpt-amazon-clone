@@ -11,6 +11,8 @@ The project recreates the core shopping flow of Amazon, including product browsi
 
 ### 👉 [Click here to open the Amazon Clone](https://gaurav124937.github.io/Javascirpt-amazon-clone/html/amazon.html)
 
+//////////// VISIT THE SITE BESIDE SECURITY WARNING ON WEB BROWSER, IT IS SAFE TO USE. BUT STILL BE CAREFUL DONT ADD ANY PERSONAL INFORMATION ////////////
+
 ---
 
 ## ✨ Features
